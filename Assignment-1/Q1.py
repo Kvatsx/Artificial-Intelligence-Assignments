@@ -32,13 +32,17 @@ class Node:
                 node[i].append(self.GraphNode[i][j])
         return node
 
-    def toString():
+    def __str__(self):
+        ans = ""
         for i in range(len(self.GraphNode)):
-            print(self.GraphNode[i])
-        print("Done")
+            ans += self.GraphNode[i] + "\n"
+        return ans
 
     def __cmp__(self, other):
         return cmp(self.distance, other.distance)
+
+    def __lt__(self, other):
+        return self.distance_top < other.distance_top
 
 # class NodeAStar:
     
@@ -300,10 +304,10 @@ class Graph:
                 return True
             # if ( Graph.isVisited(current_Node, visited) ):
             #     continue
-            print("Len Queue: ", len(queue))
-            print("Count: ", Count)
+            # print("Len Queue: ", len(queue))
+            # print("Count: ", Count)
             # print(current_Node.toString())
-            print("Current: ", current_Node.GraphNode)
+            # print("Current: ", current_Node.GraphNode)
             # print("Yes")
             Neighbours = Graph.FindAllNode(current_Node)
             current_Node.Link = Neighbours
@@ -315,49 +319,75 @@ class Graph:
             # print("Children: ", Neighbours)
 
             for i in range(len(Neighbours)):
-                print("padose")
-                for j in range(len(Neighbours[i].GraphNode)):
-                    print(Neighbours[i].GraphNode[j])
-                print("done")
+                # print("padose")
+                # for j in range(len(Neighbours[i].GraphNode)):
+                    # print(Neighbours[i].GraphNode[j])
+                # print("done")
                 if ( not Graph.isVisited(Neighbours[i], visited) ):
-                    Neighbours[i].step += current_Node.step
+                    Neighbours[i].step = current_Node.step + 1
                     queue.append(Neighbours[i])
                     visited.append(Neighbours[i])
-                    print("Not Visited!")
-                    # Neighbours[i].toString()
-                else:
-                    print("Already Visited!")
+                    # print("Not Visited!")
+                # else:
+                    # print("Already Visited!")
     
 
     def Dfs(self, root, end):
         visited = []
-        return self.DfsUtil(root, end, visited)
+        stack = []
+        stack.append(root)
+        # visited.append(root)
+
+        while ( len(stack) > 0 ):
+            current_Node = stack.pop()
+            if ( current_Node.isEqual(end) ):
+                print("Depth: ",current_Node.step)
+                return True
+            if ( Graph.isVisited(current_Node, visited) ):
+                # print("lol")
+                continue
+            visited.append(current_Node)
+            Neighbours = Graph.FindAllNode(current_Node)
+            current_Node.Link = Neighbours
+
+            for i in range(len(Neighbours)):
+                # if ( not Graph.isVisited(Neighbours[i], visited) ):
+                Neighbours[i].step = current_Node.step + 1
+                stack.append(Neighbours[i])
+                    # visited.append(Neighbours[i])
+                    # print("Not Visited!")
+                # else:
+                    # print("Already Visited!")
+        return False
+            
+
+        # return self.DfsUtil(root, end, visited)
         # if ( var == True ):
         #     return True
         # else:
         #     return False
 
-    def DfsUtil(self, current_node, end, visited):
-        visited.append(current_node)
-        if ( current_node.isEqual(end) ):
-            print("Found Match")
-            return True
+    # def DfsUtil(self, current_node, end, visited):
+    #     visited.append(current_node)
+    #     if ( current_node.isEqual(end) ):
+    #         print("Found Match")
+    #         return True
 
-        Neighbours = Graph.FindAllNode(current_node)
-        current_node.Link = Neighbours
-        # print("Length: ",len(Neighbours))
-        # for i in range(len(Neighbours)):
-        #     print("padose")
-        #     for j in range(len(Neighbours[i].GraphNode)):
-        #         print(Neighbours[i].GraphNode[j])
-        #     print("done")
+    #     Neighbours = Graph.FindAllNode(current_node)
+    #     current_node.Link = Neighbours
+    #     # print("Length: ",len(Neighbours))
+    #     # for i in range(len(Neighbours)):
+    #     #     print("padose")
+    #     #     for j in range(len(Neighbours[i].GraphNode)):
+    #     #         print(Neighbours[i].GraphNode[j])
+    #     #     print("done")
 
-        for i in range(len(Neighbours)):
-            if ( not Graph.isVisited(Neighbours[i], visited) ):
-                Neighbours[i].step += current_node.step
-                var = self.DfsUtil(Neighbours[i], end, visited) 
-                if ( var == True ):
-                    return var
+    #     for i in range(len(Neighbours)):
+    #         if ( not Graph.isVisited(Neighbours[i], visited) ):
+    #             Neighbours[i].step += current_node.step
+    #             var = self.DfsUtil(Neighbours[i], end, visited) 
+    #             if ( var == True ):
+    #                 return var
     
     def CalculateManhattanDistance(self, node, end):
         arr = [0]*(self.size+1)
@@ -383,6 +413,7 @@ class Graph:
         visited.append(root)
 
         while ( not q.empty() ):
+
             current_Node = (q.get())[1]
             # print("current_Node: ", current_Node)
             print("q.get()[1]: ", current_Node.GraphNode)
@@ -406,7 +437,7 @@ class Graph:
                     dist = self.CalculateManhattanDistance(Neighbours[i], end)
                     Neighbours[i].distance_top = current_Node.distance_top + 1
                     Neighbours[i].distance = Neighbours[i].distance_top + dist
-                    Neighbours[i].step += current_Node.step
+                    Neighbours[i].step = current_Node.step + 1
                     print(dist, Neighbours[i].distance_top)
                     print("GraphNode: ", Neighbours[i].GraphNode)
                     q.put((Neighbours[i].distance, Neighbours[i]))
@@ -423,7 +454,8 @@ if __name__ == "__main__":
     # N = 2
     StartState = [[0, 2, 3], [1, 4, 5], [8, 7, 6]]
     GoalState = [[1, 2, 3], [8, 0, 4], [7, 6, 5]]
-    # StartState = []
+    # StartState = [[1, 2, 5], [3, 4, 6], [8, 7, 0]]
+    # GoalState = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
     
     Root = Node(StartState, 0, [], None)
     End = Node(GoalState, 0, [], None)
@@ -436,6 +468,6 @@ if __name__ == "__main__":
     #     print("Found Match")
     # else:
     #     print("No Match")
-    # gp.Dfs(Root, End)
+    # print(gp.Dfs(Root, End))
     gp.AStarAlgorithm(Root, End)
     # gp.AStarAlgorithm(RootA, EndA)
