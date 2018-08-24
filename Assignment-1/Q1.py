@@ -2,10 +2,13 @@
 # Kaustav Vats (2016048)
 
 import queue as Q
+from time import time
+from math import sqrt
 
 class Node:
     
     def __init__(self, node, step, GraphNode, Link):
+        self.UID = ""
         self.step = step
         self.node = node
         self.distance_top = 0
@@ -16,6 +19,7 @@ class Node:
             GraphNode.append([])
             for j in range(len(node[i])):
                 GraphNode[i].append(node[i][j])
+                self.UID += str(node[i][j])
 
     def isEqual(self, node2):
         for i in range(len(self.GraphNode)):
@@ -43,6 +47,9 @@ class Node:
 
     def __lt__(self, other):
         return self.distance_top < other.distance_top
+
+    def __eq__(self, other):
+        return self.distance_top == other.distance_top
 
 # class NodeAStar:
     
@@ -300,6 +307,7 @@ class Graph:
                 return False
             current_Node = queue.pop(0)
             if ( current_Node.isEqual(end) ):
+                print("No of Nodes visited: ", Count)
                 print("Depth: ",current_Node.step)
                 return True
             # if ( Graph.isVisited(current_Node, visited) ):
@@ -336,11 +344,14 @@ class Graph:
         visited = []
         stack = []
         stack.append(root)
+        Count = 0
         # visited.append(root)
 
         while ( len(stack) > 0 ):
+            Count += 1
             current_Node = stack.pop()
             if ( current_Node.isEqual(end) ):
+                print("No of Nodes visited: ", Count)
                 print("Depth: ",current_Node.step)
                 return True
             if ( Graph.isVisited(current_Node, visited) ):
@@ -411,13 +422,19 @@ class Graph:
         root.distance = dist
         q.put((1, root))
         visited.append(root)
+        Count = 0
 
         while ( not q.empty() ):
-
+            Count += 1
             current_Node = (q.get())[1]
             # print("current_Node: ", current_Node)
-            print("q.get()[1]: ", current_Node.GraphNode)
+            # print("q.get()[1]: ")
+            # for j in range(len(current_Node.GraphNode)):
+            #         print(current_Node.GraphNode[j])
+            # print("dist_top, dist", current_Node.distance_top, current_Node.distance)
+            # print("")
             if ( current_Node.isEqual(end) ):
+                print("No of Nodes visited: ", Count)
                 print("Depth: ",current_Node.step)
                 return True
             
@@ -438,36 +455,197 @@ class Graph:
                     Neighbours[i].distance_top = current_Node.distance_top + 1
                     Neighbours[i].distance = Neighbours[i].distance_top + dist
                     Neighbours[i].step = current_Node.step + 1
-                    print(dist, Neighbours[i].distance_top)
-                    print("GraphNode: ", Neighbours[i].GraphNode)
+                    # print(dist, Neighbours[i].distance_top)
+                    # print("GraphNode: ")
+                    # for j in range(len(Neighbours[i].GraphNode)):
+                    #     print(Neighbours[i].GraphNode[j])
+                    # print("dist_top, dist, distance", Neighbours[i].distance_top, dist, Neighbours[i].distance)
                     q.put((Neighbours[i].distance, Neighbours[i]))
                     visited.append(Neighbours[i])
-                    print("Not Visited!")
+                    # print("Not Visited!")
                     # Neighbours[i].toString()
-                else:
-                    print("Already Visited!")
+                # else:
+                    # print("Already Visited!")
+            # print("")
 
         return False
     
-if __name__ == "__main__":
-    N = int(input())
-    # N = 2
-    StartState = [[0, 2, 3], [1, 4, 5], [8, 7, 6]]
-    GoalState = [[1, 2, 3], [8, 0, 4], [7, 6, 5]]
-    # StartState = [[1, 2, 5], [3, 4, 6], [8, 7, 0]]
-    # GoalState = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
+    def IDAStar(self, root, end):
+        queue = Q.PriorityQueue()
+        dist = self.CalculateManhattanDistance(root, end)
+        root.distance = dist
+        queue.put((1, root))
+        var = dist
+        while True:
+            var = self.IDAStarUtil(queue, end, var)
+            if ( isinstance(var, bool) ):
+                return True
+            elif( isinstance(var, int) ):
+                if ( var == -1 ):
+                    return False
+        
+    def IDAStarUtil(self, q, end, MaxDistance):
+        
+        Count = 0
+        CurrentDistance = -1
+        # print("MaxDistance: ", MaxDistance)
+        while ( not q.empty() ):
+            Count += 1
+            current_Node = (q.get())[1]
+            # print("current_Node: ", current_Node)
+            # print("q.get()[1]: ")
+            # for j in range(len(current_Node.GraphNode)):
+                    # print(current_Node.GraphNode[j])
+            # print("dist_top, dist", current_Node.distance_top, current_Node.distance)
+            # print("")
+            if ( current_Node.isEqual(end) ):
+                print("No of Nodes visited: ", Count)
+                print("Depth: ",current_Node.step)
+                return True
+            # for i in range(len(current_Node.GraphNode)):
+            #     print(current_Node.GraphNode[i])
+            # print(current_Node.distance)
+            # print("MaxDistance: ", MaxDistance)
+            if ( current_Node.distance > MaxDistance ):
+                # print("Continue..")
+                if ( CurrentDistance != -1 and current_Node.distance < CurrentDistance ):
+                    CurrentDistance = current_Node.distance
+                else:
+                    CurrentDistance = current_Node.distance
+                continue
+            # print("Why Continue...")
+            Neighbours = Graph.FindAllNode(current_Node)
+            current_Node.Link = Neighbours
+            # for i in range(len(Neighbours)):
+            #     dist = self.CalculateManhattanDistance(Neighbours[i], end)
+            #     Neighbours[i].distance_top = current_Node.distance_top + 1
+            #     Neighbours[i].distance = Neighbours[i].distance_top + dist
+
+            for i in range(len(Neighbours)):
+                # print("padose")
+                # for j in range(len(Neighbours[i].GraphNode)):
+                #     print(Neighbours[i].GraphNode[j])
+                # print("done")
+                dist = self.CalculateManhattanDistance(Neighbours[i], end)
+                Neighbours[i].distance_top = current_Node.distance_top + 1
+                Neighbours[i].distance = Neighbours[i].distance_top + dist
+                Neighbours[i].step = current_Node.step + 1
+                q.put((Neighbours[i].distance, Neighbours[i]))
+
+        return CurrentDistance
     
+if __name__ == "__main__":
+    
+    print("Enter Your Puzzle N: ")
+    N = int(input())
+    gp = Graph(N)
+    print("Enter Start State: ")
+    StartState = []
+    for i in range(int(sqrt(N+1))):
+        lil = list(map(int, input().split()))
+        StartState.append(lil)
+    print("Enter Goal State: ")
+    GoalState = []
+    for i in range(int(sqrt(N+1))):
+        lil = list(map(int, input().split()))
+        GoalState.append(lil)
     Root = Node(StartState, 0, [], None)
     End = Node(GoalState, 0, [], None)
+    while True:
+        print("-------Menu-------")
+        print("1. BFS")
+        print("2. DFS")
+        print("3. A*")
+        print("4. IDA*")
+        print("5. All")
+        print("6. Exit")
+        NumEnter = int(input())
+        if ( NumEnter == 1 ):
+            t1 = int(round(time()*1000))
+            if ( gp.bfs(Root, End) ):
+                print("Found Match")
+            else:
+                print("No Match")
+            t2 = int(round(time()*1000))
+            print("Total time taken by Bfs: ", t2-t1)
+        elif ( NumEnter == 2 ):
+            t1 = int(round(time()*1000))
+            if ( gp.Dfs(Root, End) ):
+                print("Found Match")
+            else:
+                print("No Match")
+            t2 = int(round(time()*1000))
+            print("Total time taken by Dfs: ", t2-t1)
+        elif ( NumEnter == 3 ):
+            t1 = int(round(time()*1000))
+            if ( gp.AStarAlgorithm(Root, End) ):
+                print("Found Match")
+            else:
+                print("No Match")
+            t1 = int(round(time()*1000))
+            print("Total time taken by A*: ", t2-t1)
+        elif ( NumEnter == 4 ):
+            t1 = int(round(time()*1000))
+            if ( gp.IDAStar(Root, End) ):
+                print("Found Match")
+            else:
+                print("No Match")
+            t2 = int(round(time()*1000))
+            print("Total time taken by IDA*: ", t2-t1)
+        elif( NumEnter == 5 ):
+            t1 = int(round(time()*1000))
+            if ( gp.bfs(Root, End) ):
+                print("Found Match for Bfs")
+            else:
+                print("No Match for Bfs")
+            t2 = int(round(time()*1000))
+            print("Total time taken by bfs: ", t2-t1)
+            t1 = int(round(time()*1000))
+            if ( gp.Dfs(Root, End) ):
+                print("Found Match for Dfs")
+            else:
+                print("No Match for Dfs")
+            t2 = int(round(time()*1000))
+            print("Total time taken by Dfs: ", t2-t1)
+            t1 = int(round(time()*1000))
+            if ( gp.AStarAlgorithm(Root, End) ):
+                print("Found Match for A*")
+            else:
+                print("No Match for A*")
+            t2 = int(round(time()*1000))
+            print("Total time taken by A*: ", t2-t1)
+            t1 = int(round(time()*1000))
+            if ( gp.IDAStar(Root, End) ):
+                print("Found Match for IDA*")
+            else:
+                print("No Match for IDA*")
+            t2 = int(round(time()*1000))
+            print("Total time taken by IDA*: ", t2-t1)
+        elif ( NumEnter == 5 ):
+            break
+        else:
+            print("Please enter a valid input")
+            
 
-    # RootA = NodeAStar(StartState, 0, [], None)
-    # EndA = NodeAStar(GoalState, 0, [], None)
-    gp = Graph(N)
-    # gp.bfs(Root, End)
-    # if ( gp.bfs(Root, End) ):
-    #     print("Found Match")
-    # else:
-    #     print("No Match")
-    # print(gp.Dfs(Root, End))
-    gp.AStarAlgorithm(Root, End)
-    # gp.AStarAlgorithm(RootA, EndA)
+    # N = int(input())
+    # # # N = 2
+    # StartState = [[0, 2, 3], [1, 4, 5], [8, 7, 6]]
+    # GoalState = [[1, 2, 3], [8, 0, 4], [7, 6, 5]]
+    # # # StartState = [[1, 2, 5], [3, 4, 6], [8, 7, 0]]
+    # # # GoalState = [[1, 2, 3], [4, 5, 6], [7, 8, 0]]
+    
+    # Root = Node(StartState, 0, [], None)
+    # End = Node(GoalState, 0, [], None)
+
+    # # # RootA = NodeAStar(StartState, 0, [], None)
+    # # # EndA = NodeAStar(GoalState, 0, [], None)
+    # gp = Graph(N)
+    # # # gp.bfs(Root, End)
+    # # # if ( gp.bfs(Root, End) ):
+    # # #     print("Found Match")
+    # # # else:
+    # # #     print("No Match")
+    # # print(gp.Dfs(Root, End))
+    # # # gp.AStarAlgorithm(Root, End)
+    # gp.IDAStar(Root, End)
+    # # # gp.AStarAlgorithm(RootA, EndA)

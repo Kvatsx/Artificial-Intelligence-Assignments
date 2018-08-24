@@ -1,0 +1,99 @@
+q.get()[1]: 
+[0, 2, 3]
+[1, 4, 5]
+[8, 7, 6]
+dist_top, dist 0 6
+
+GraphNode: 
+[1, 2, 3]
+[0, 4, 5]
+[8, 7, 6]
+dist_top, dist, distance 1 5 6
+GraphNode: 
+[2, 0, 3]
+[1, 4, 5]
+[8, 7, 6]
+dist_top, dist, distance 1 7 8
+
+q.get()[1]: 
+[1, 2, 3]
+[0, 4, 5]
+[8, 7, 6]
+dist_top, dist 1 6
+
+GraphNode: 
+[1, 2, 3]
+[8, 4, 5]
+[0, 7, 6]
+dist_top, dist, distance 2 4 6
+GraphNode: 
+[1, 2, 3]
+[4, 0, 5]
+[8, 7, 6]
+dist_top, dist, distance 2 6 8
+
+q.get()[1]: 
+[1, 2, 3]
+[8, 4, 5]
+[0, 7, 6]
+dist_top, dist 2 6
+
+GraphNode: 
+[1, 2, 3]
+[8, 4, 5]
+[7, 0, 6]
+dist_top, dist, distance 3 3 6
+
+q.get()[1]: 
+[1, 2, 3]
+[8, 4, 5]
+[7, 0, 6]
+dist_top, dist 3 6
+
+GraphNode: 
+[1, 2, 3]
+[8, 0, 5]
+[7, 4, 6]
+dist_top, dist, distance 4 4 8
+GraphNode: 
+[1, 2, 3]
+[8, 4, 5]
+[7, 6, 0]
+dist_top, dist, distance 4 2 6
+
+q.get()[1]: 
+[1, 2, 3]
+[8, 4, 5]
+[7, 6, 0]
+dist_top, dist 4 6
+
+GraphNode: 
+[1, 2, 3]
+[8, 4, 0]
+[7, 6, 5]
+dist_top, dist, distance 5 1 6
+
+q.get()[1]: 
+[1, 2, 3]
+[8, 4, 0]
+[7, 6, 5]
+dist_top, dist 5 6
+
+GraphNode: 
+[1, 2, 0]
+[8, 4, 3]
+[7, 6, 5]
+dist_top, dist, distance 6 2 8
+GraphNode: 
+[1, 2, 3]
+[8, 0, 4]
+[7, 6, 5]
+dist_top, dist, distance 6 0 6
+
+q.get()[1]: 
+[1, 2, 3]
+[8, 0, 4]
+[7, 6, 5]
+dist_top, dist 6 6
+
+Depth:  6
