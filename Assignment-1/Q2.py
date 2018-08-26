@@ -338,10 +338,6 @@ class Graph:
             if ( len(queue) == 0 ):
                 return False
             current_Node = queue.pop(0)
-            # print("CurrentNode: ")
-            # for i in range(len(current_Node.GraphNode)):
-            #     print(current_Node.GraphNode[i])
-            # print("")
             if ( current_Node.isSolution() ):
                 print("No of Nodes visited: ", Count)
                 print("Depth: ",current_Node.step)
@@ -351,10 +347,6 @@ class Graph:
             current_Node.Link = Neighbours
 
             for i in range(len(Neighbours)):
-                # print("padose")
-                # for j in range(len(Neighbours[i].GraphNode)):
-                #     print(Neighbours[i].GraphNode[j])
-                # print("done")
                 if Neighbours[i].UID not in visited:
                     queue.append(Neighbours[i])
                     visited[Neighbours[i].UID] = Neighbours[i]
@@ -414,12 +406,6 @@ class Graph:
         while ( not q.empty() ):
             Count += 1
             current_Node = (q.get())[1]
-            # print("current_Node: ", current_Node)
-            # print("q.get()[1]: ")
-            # for j in range(len(current_Node.GraphNode)):
-            #         print(current_Node.GraphNode[j])
-            # print("dist_top, dist", current_Node.distance_top, current_Node.distance)
-            # print("")
             if ( current_Node.isSolution() ):
                 print("No of Nodes visited: ", Count)
                 print("Depth: ",current_Node.step)
@@ -427,32 +413,15 @@ class Graph:
             
             Neighbours = self.FindAllNode(current_Node)
             current_Node.Link = Neighbours
-            # for i in range(len(Neighbours)):
-            #     dist = self.CalculateManhattanDistance(Neighbours[i], end)
-            #     Neighbours[i].distance_top = current_Node.distance_top + 1
-            #     Neighbours[i].distance = Neighbours[i].distance_top + dist
 
             for i in range(len(Neighbours)):
-                # print("padose")
-                # for j in range(len(Neighbours[i].GraphNode)):
-                #     print(Neighbours[i].GraphNode[j])
-                # print("done")
+                
                 if Neighbours[i].UID not in visited:
                     dist = Neighbours[i].CalculateHeuristicDistance()
                     Neighbours[i].distance_top = current_Node.distance_top + 1
                     Neighbours[i].distance = Neighbours[i].distance_top + dist
-                    # print(dist, Neighbours[i].distance_top)
-                    # print("GraphNode: ")
-                    # for j in range(len(Neighbours[i].GraphNode)):
-                    #     print(Neighbours[i].GraphNode[j])
-                    # print("dist_top, dist, distance", Neighbours[i].distance_top, dist, Neighbours[i].distance)
                     q.put((Neighbours[i].distance, Neighbours[i]))
                     visited[Neighbours[i].UID] = Neighbours[i]
-                    # print("Not Visited!")
-                    # Neighbours[i].toString()
-                # else:
-                    # print("Already Visited!")
-            # print("")
 
         return False
 
