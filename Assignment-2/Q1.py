@@ -39,28 +39,6 @@ class Board:
             print("\n")
         print()
 
-    # def rowEqual(self):
-    #     for i in range(self.size):
-    #         if ( self.board[i][0] == self.board[i][1] and self.board[i][1] == self.board[i][2] and self.board[i][0] != '_' ):
-    #             return True
-    #     return False
-
-    # def colEqual(self):
-    #     for i in range(self.size):
-    #         if ( self.board[0][i] == self.board[1][i] and self.board[1][i] == self.board[2][i] and self.board[0][i] != '_' ):
-    #             return True
-    #     return False
-
-    # def diagEqual(self):
-    #     if ( self.board[0][0] == self.board[1][1] and self.board[1][1] == self.board[2][2] and self.board[0][0] != '_' ):
-    #         return True
-    #     if ( self.board[0][2] == self.board[1][1] and self.board[1][1] == self.board[2][0] and self.board[0][2] != '_' ):
-    #         return True
-    #     return False
-
-    # def isGameOver(self):
-    #     return ( self.rowEqual() or self.colEqual() or self.diagEqual() )
-
     def isMoveLeft(self):
         for i in range(self.size):
             for j in range(self.size):
