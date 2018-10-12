@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # Kaustav Vats (2016048)
 
+from time import time
+
 class Board:
 
     def __init__(self, size, board):
@@ -73,13 +75,19 @@ class Board:
         return 0
 
 class TicTacToe:
+    # count1 = 0
+    # count2 = 0
 
     def __init__(self, size, user, computer):
         self.size = size
         self.user = user
         self.computer = computer
+        self.count1 = 0
+        self.count2 = 0
+
 
     def MiniMax(self, board, isComputer):
+        self.count1 = self.count1 + 1
         score = board.evaluate(self.user, self.computer)
         if ( score == 1 or score == -1 ):
             return score
@@ -122,6 +130,7 @@ class TicTacToe:
         return MatrixObject
 
     def AlphaBetaPruning(self, board, aplha, beta, isComputer):
+        self.count2 += 1
         score = board.evaluate(self.user, self.computer)
         if ( score == 1 or score == -1 ):
             return score
@@ -193,6 +202,10 @@ if __name__ == "__main__":
         Matrix = Board(3, None)
         ttt = TicTacToe(3, user, computer)
         turn = True
+
+        # PlayerMovesTesting = [[0,0], [2, 2], [2, 1], [1, 0]]
+        # val = 0
+        t1 = int(round(time()*1000))
         for i in range(9):
             if ( turn ):
                 while(True):
@@ -201,6 +214,9 @@ if __name__ == "__main__":
                     # x=0
                     y = int(input("y: "))
                     # y=0
+                    # x = PlayerMovesTesting[val][0]
+                    # y = PlayerMovesTesting[val][1]
+                    # val += 1
                     if ( Matrix.board[x][y] != '_' ):
                         print("\tWrong Move!\n")
                         continue
@@ -231,5 +247,7 @@ if __name__ == "__main__":
             elif ( not Matrix.isMoveLeft() ):
                 print("\nMatch Draw!")
                 break
-                
+        t2 = int(round(time()*1000))
+        print("Total time taken: ", t2-t1)  
+        # print("Moves: ", ttt.count1, ttt.count2)
 
