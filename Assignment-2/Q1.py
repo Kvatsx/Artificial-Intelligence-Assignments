@@ -249,5 +249,5 @@ if __name__ == "__main__":
                 break
         t2 = int(round(time()*1000))
         print("Total time taken: ", t2-t1)  
-        # print("Moves: ", ttt.count1, ttt.count2)
+        print("Moves: ", ttt.count1, ttt.count2)
 
