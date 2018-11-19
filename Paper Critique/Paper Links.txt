@@ -1,0 +1,6 @@
+Links:-
+1. https://aaai.org/Conferences/AAAI-18/wp-content/uploads/2017/12/AAAI-18-Accepted-Paper-List.Web_.pdf
+2. https://arxiv.org/pdf/1709.06692.pdf
+
+This paper was accepted in AAAI'18.
+A voting based system for ethical decision making.
