@@ -1,0 +1,8 @@
+/tmp/pip-req-build-8l8uecsn/build/lib.linux-x86_64-3.6/atari_py/ale_interface/build/CMakeFiles/install/strip.dir
+/tmp/pip-req-build-8l8uecsn/build/lib.linux-x86_64-3.6/atari_py/ale_interface/build/CMakeFiles/install/local.dir
+/tmp/pip-req-build-8l8uecsn/build/lib.linux-x86_64-3.6/atari_py/ale_interface/build/CMakeFiles/install.dir
+/tmp/pip-req-build-8l8uecsn/build/lib.linux-x86_64-3.6/atari_py/ale_interface/build/CMakeFiles/list_install_components.dir
+/tmp/pip-req-build-8l8uecsn/build/lib.linux-x86_64-3.6/atari_py/ale_interface/build/CMakeFiles/rebuild_cache.dir
+/tmp/pip-req-build-8l8uecsn/build/lib.linux-x86_64-3.6/atari_py/ale_interface/build/CMakeFiles/uninstall.dir
+/tmp/pip-req-build-8l8uecsn/build/lib.linux-x86_64-3.6/atari_py/ale_interface/build/CMakeFiles/edit_cache.dir
+/tmp/pip-req-build-8l8uecsn/build/lib.linux-x86_64-3.6/atari_py/ale_interface/build/CMakeFiles/ale-c-lib.dir

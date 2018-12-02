@@ -1,0 +1,42 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/tmp/pip-req-build-8l8uecsn/build/lib.linux-x86_64-3.6/atari_py/ale_interface/src/emucore/unzip.c
+stdio.h
+-
+stdlib.h
+-
+string.h
+-
+zlib.h
+-
+unzip.h
+/tmp/pip-req-build-8l8uecsn/build/lib.linux-x86_64-3.6/atari_py/ale_interface/src/emucore/unzip.h
+stddef.h
+-
+string.h
+-
+stdlib.h
+-
+errno.h
+-
+
+/tmp/pip-req-build-8l8uecsn/build/lib.linux-x86_64-3.6/atari_py/ale_interface/src/emucore/unzip.h
+zlib.h
+-
+
+/tmp/pip-req-build-8l8uecsn/build/lib.linux-x86_64-3.6/atari_py/ale_interface/src/external/TinyMT/tinymt32.c
+tinymt32.h
+/tmp/pip-req-build-8l8uecsn/build/lib.linux-x86_64-3.6/atari_py/ale_interface/src/external/TinyMT/tinymt32.h
+
+/tmp/pip-req-build-8l8uecsn/build/lib.linux-x86_64-3.6/atari_py/ale_interface/src/external/TinyMT/tinymt32.h
+stdint.h
+-
+inttypes.h
+-
+
