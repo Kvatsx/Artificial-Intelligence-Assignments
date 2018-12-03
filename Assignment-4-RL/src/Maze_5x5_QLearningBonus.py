@@ -86,6 +86,11 @@ class MazeSolver:
         plt.savefig('ActionProbability.png')
         plt.show()
 
+    def CalculateValue(self, state, state2, reward, action, action2):
+        predict = QTable[CurrentState + (Action, )]
+        target = reward + DiscountFactor*Q[state2, action2]
+        QTable[CurrentState + (Action, )] = QTable[CurrentState + (Action, )] + LearningRate * (target - predict)
+
     def StartLearning(self):
         if Debug:
             env.render()
@@ -97,18 +102,26 @@ class MazeSolver:
             CurrentState = tuple(map(int, CurrentState))
             TotalReward = 0
             TotalSteps = 0
-            
+            Action = self.NextAction(CurrentState)
+
             Finished = False
             while not Finished:
-                Action = self.NextAction(CurrentState)
+                
                 NewState, RewardAction, Finished, info = env.step(Action)
                 NewState = tuple(map(int, NewState))
-                # print("\nPreviouseState: ", CurrentState, "\nNewState: ", NewState)
                 
+                Action2 = self.NextAction(NewState)
+
                 print("QT NewState: ", QTable[NewState] )
-                BestQValue = np.amax(QTable[NewState])
-                QTable[CurrentState + (Action, )] += LearningRate*(RewardAction + (DiscountFactor * BestQValue) - QTable[CurrentState + (Action, )])
+                
+                # self.CalculateValue(CurrentState, NewState, RewardAction, Action, Action2)
+                predict = QTable[CurrentState + (Action, )]
+                target = RewardAction + DiscountFactor*QTable[NewState + (Action2, )]
+                QTable[CurrentState + (Action, )] = QTable[CurrentState + (Action, )] + LearningRate * (target - predict)
+
                 CurrentState = NewState
+                Action = Action2
+
                 TotalReward += RewardAction
                 if Debug:
                     env.render()
@@ -153,7 +166,7 @@ if __name__ == "__main__":
     env = gym.make("maze-sample-5x5-v0")
     
     # Total Training Iterations
-    EpisodesCount = 100  # Default should be 100.
+    EpisodesCount = 150  # Default should be 100.
 
     # Hyperparameters
     LearningRate = 0.7
