@@ -29,37 +29,41 @@ class MazeSolverTest:
         Action = int(np.argmax(QTable[CurrentState]))
         return Action
 
-    def ShowResults(self, TotalPenalties, TotalEpochs):
+    def ShowResults(self, TotalPenalties, TotalEpochs, TotalReward):
         print("Total Episodes: ", EpisodesCount)
         print("Average steps per episode: ", TotalEpochs/EpisodesCount)
         print("Average penalties per episode: ", TotalPenalties/EpisodesCount)
+        print("Average Reward per Episode: ", TotalReward/EpisodesCount)
 
     def StartTesting(self):
-        env.render()
         TotalPenalties = 0
         TotalEpochs = 0
+        TotalReward = 0.0
 
         for iteration in range(EpisodesCount):
             CurrentState = env.reset()
             CurrentState = tuple(map(int, CurrentState))
             Penalties = 0
             Epochs = 0
-            
+            Reward = 0.0
+
             Finished = False
             while not Finished:
                 Action = self.NextAction(CurrentState)
                 NewState, RewardAction, Finished, info = env.step(Action)
                 NewState = tuple(map(int, NewState))
                 CurrentState = NewState
+                Reward += RewardAction
 
                 if RewardAction < 0.0:
                     Penalties += 1
-                env.render()
+                # env.render()
                 Epochs += 1
             TotalPenalties += Penalties
             TotalEpochs += Epochs
+            TotalReward += Reward
             print("Episode Number: ", iteration)
-        self.ShowResults(TotalPenalties, TotalEpochs)
+        self.ShowResults(TotalPenalties, TotalEpochs, TotalReward)
                 
 
 

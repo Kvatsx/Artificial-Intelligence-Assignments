@@ -25,12 +25,12 @@ print("--------Import Done!--------")
 
 class MazeSolver:
     
-    def __init__(self, LearningRate):
-        self.LearningRate = LearningRate
+    def __init__(self, ExplorationRate):
+        self.ExplorationRate = ExplorationRate
     
     def NextAction(self, CurrentState):
         RandomValue = random()
-        if RandomValue < self.LearningRate:
+        if RandomValue < self.ExplorationRate:
             Action = env.action_space.sample()
         else:
             Action = int(np.argmax(QTable[CurrentState]))
@@ -40,19 +40,35 @@ class MazeSolver:
     #     self.LearningRate = max(MinLearningRate, min(0.9, 1.0-math.log10((iteration+1)/10)))
     
     def updateParameters(self):        
-        self.LearningRate = self.LearningRate - 0.01*self.LearningRate
-        self.LearningRate = max(MinLearningRate, self.LearningRate)
+        self.ExplorationRate = self.ExplorationRate - 0.03*self.ExplorationRate
+        self.ExplorationRate = max(MinExplorationRate, self.ExplorationRate)
     
     def ShowLearningCurve(self, rewards):
         episodes = []
         for i in range(len(rewards)):
             episodes.append(i+1)
         plt.plot(episodes, rewards)
-        plt.xlabel('Episodes') 
+        plt.xlabel('Number of Episodes') 
         plt.ylabel('Rewards')
         plt.title('Learning Curve for 5x5 Maze')
-        lgd = "Learning Rate- " + str(LearningRate)
-        plt.legend([lgd], loc='lower right')
+        plt.legend(["Learning Rate- " + str(LearningRate)], loc='lower right')
+        plt.savefig('LearningCurve_1.png')
+        plt.show()
+
+    def ShowStepsCurve(self, steps):
+        episodes = []
+        stepcount = 0
+        for i in range(len(steps)):
+            episodes.append(i+1)
+            stepcount += steps[i]
+        print("Average steps per episode: ", stepcount/len(steps))
+        print("Total Number of Steps: ", stepcount)
+        plt.plot(episodes, steps)
+        plt.xlabel('Number of Episodes') 
+        plt.ylabel('Each Episode Step count')
+        plt.title('Learning Curve for 5x5 Maze')
+        plt.legend(["Each Episode steps"], loc='upper right')
+        plt.savefig('LearningCurve_2.png')
         plt.show()
 
     def ShowActionProbability(self):
@@ -66,19 +82,21 @@ class MazeSolver:
         plt.xlabel('State Visited Count') 
         plt.ylabel('Probability')
         plt.title('Probability change for each Action at State x,y=2,4')
-        plt.legend(['Action 1', 'Action 2', 'Action 3', 'Action 4'], loc='upper right')
+        plt.legend(['Up Action', 'Down Action', 'Right Action', 'Left Action'], loc='upper right')
+        plt.savefig('ActionProbability.png')
         plt.show()
 
     def StartLearning(self):
-        DiscountFactor = 0.8
         if Debug:
             env.render()
         Reward = [0.0]*EpisodesCount
+        Steps = [0]*EpisodesCount
         
         for iteration in range(EpisodesCount):
             CurrentState = env.reset()
             CurrentState = tuple(map(int, CurrentState))
             TotalReward = 0
+            TotalSteps = 0
             
             Finished = False
             while not Finished:
@@ -89,7 +107,7 @@ class MazeSolver:
                 
                 print("QT NewState: ", QTable[NewState] )
                 BestQValue = np.amax(QTable[NewState])
-                QTable[CurrentState + (Action, )] += self.LearningRate*(RewardAction + (DiscountFactor * BestQValue) - QTable[CurrentState + (Action, )])
+                QTable[CurrentState + (Action, )] += LearningRate*(RewardAction + (DiscountFactor * BestQValue) - QTable[CurrentState + (Action, )])
                 CurrentState = NewState
                 TotalReward += RewardAction
                 if Debug:
@@ -108,20 +126,22 @@ class MazeSolver:
                 # print("A3 ", QTable[NewState][2])
                 # print("A4 ", QTable[NewState][3])
 
-
+                TotalSteps += 1
                 if Finished:
                     print("\nEpisode = %d" % iteration)
-                    print("Learning rate: %f" % self.LearningRate)
-                    print("Reward: %f" % TotalReward)
-                    print("")
+                    print("Learning rate: %f" % LearningRate)
+                    print("Exploration Rate: %f" % self.ExplorationRate)
+                    print("Reward: %f \n" % TotalReward)
                     break
                     
             self.updateParameters()
             # self.updateParameters(iteration)
             Reward[iteration] = TotalReward
+            Steps[iteration] = TotalSteps
         print(QTable)
-        print(Reward)
+        # print(Reward)
         self.ShowLearningCurve(Reward)
+        self.ShowStepsCurve(Steps)
         self.ShowActionProbability()
                 
 
@@ -133,11 +153,14 @@ if __name__ == "__main__":
     env = gym.make("maze-sample-5x5-v0")
     
     # Total Training Iterations
-    EpisodesCount = 10  # Default should be 100.
+    EpisodesCount = 100  # Default should be 100.
 
     # Hyperparameters
-    LearningRate = 0.9  # Alpha
-    MinLearningRate = 0.3
+    LearningRate = 0.7
+    ExplorationRate = 0.4
+    MinExplorationRate = 0.1
+
+    DiscountFactor = 0.8
 
     # Q Table size
     ActionSize = env.action_space.n
