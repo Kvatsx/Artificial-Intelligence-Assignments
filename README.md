@@ -10,7 +10,7 @@
  
  ## Assignment-2
  * Created an AI of Tic-Tac-Toe using **Minimax** and **Alpha Beta Pruning** Algorithm.
- * Time Table Scheduling using **Genitic, Memetic and Constraint Specific Problem (CSP) Algorithm**.
+ * Time Table Scheduling using **Genitic, Memetic and Constraint Satisfaction Problem (CSP) Algorithm**.
  
  ## Assignment-3 
  * Implemented **Ant Colony Optimization Technique** for Travelling Salesman Problem on a random Graph.
