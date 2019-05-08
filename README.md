@@ -16,5 +16,5 @@
  * Implemented **Ant Colony Optimization Technique** for Travelling Salesman Problem on a random Graph.
  
  ## Assignment-4 
- * **Reinforcement Learning** Trained an AI agent using Q-Learning Approach for a static environment.
- * **Reinforcement Learning** Trained an AI agent using State-Action-Reward-State-Action(SARSA) Approach for a static environment.
+ * **Reinforcement Learning** Trained an AI agent using **Q-Learning** Approach for a static environment.
+ * **Reinforcement Learning** Trained an AI agent using **State-Action-Reward-State-Action(SARSA)** Approach for a static environment.
