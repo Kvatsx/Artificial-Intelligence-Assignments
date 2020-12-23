@@ -5,7 +5,7 @@
   * Breadth First Search Algorithm
   * Depth First Search Algorithm
   * A* Algorithm
-  * Iterative Deepining A* Algorithm
+  * Iterative Deepening A* Algorithm (IDA*)
  * Solved NxN Search based problem usign above mentioned algorithms such that no two-neighbours can have same color. 
  
  ## Assignment-2
